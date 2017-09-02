@@ -1,0 +1,39 @@
+{
+  "name": "arena-blog",
+  "version": "1.0.0",
+  "description": "Using stdlib as the microservice to get the request to arena",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently 'npm run css:watch' 'npm run server:create'",
+    "server:create": "budo src/ -l -o -P --serve dist/bundle.js -d dist/ -- -t yo-yoify -t es2040",
+    "css:build": "node src/design.js | postcss --use autoprefixer > dist/bundle.css",
+    "css:watch": "onchange 'src/design.js' -- npm run css:build",
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/siiiick/arena-blog.git"
+  },
+  "author": "Timur Fattahov <timur@56.digita> (timur.black)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/siiiick/arena-blog/issues"
+  },
+  "homepage": "https://github.com/siiiick/arena-blog#readme",
+  "dependencies": {
+    "bel": "^5.0.3",
+    "recsst": "^1.1.2"
+  },
+  "devDependencies": {
+    "autoprefixer": "^7.1.3",
+    "browserify": "^14.4.0",
+    "budo": "^10.0.4",
+    "concurrently": "^3.5.0",
+    "es2040": "^1.2.6",
+    "gr8": "^2.1.8",
+    "onchange": "^3.2.1",
+    "postcss-clean": "^1.0.3",
+    "postcss-cli": "^4.1.0",
+    "yo-yoify": "^3.7.3"
+  }
+}
