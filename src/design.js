@@ -7,6 +7,9 @@ var customCss = `
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 	}
+
+	body { font-family: monospace; }
+	.mw1000{max-width:1000px;margin:0 auto;}
 `
 
 var css = gr8({

@@ -1,22 +1,19 @@
 var yo = require('yo-yo')
 var blog = content()
 
+// components
+var Image = require('./components/image')
+var Text = require('./components/text')
+
 function content (items=[]) {
 	console.log(items)
 	return yo`
-		<main class='buddy'>
+		<main class='buddy px2 py2 mw1000'>
 			${items.map(item => {
-				return image(item)
+				if (item.class === 'Image') return Image(item)
+					else if (item.class === 'Text') return Text(item)
 			})}
 		</main>
-	`
-}
-
-function image (data) {
-	return yo`
-		<div>
-			<img class='w100' src='${data.image.original.url}' alt='${data.title}' />
-		</div>
 	`
 }
 
@@ -24,7 +21,8 @@ fetch('https://timur.stdlib.com/are@dev')
 .then(res => res.json())
 .then(json => {
 	// console.log(json)
-	let newBlog = content(json.contents)
+
+	let newBlog = content(json.contents.reverse())
 	yo.update(blog, newBlog)
 })
 
