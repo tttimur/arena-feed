@@ -1,4 +1,4 @@
-the stdlib to get the content
+Using stdlib as the microservice to get the request to arena
 
 ```js
 const fetch = require('node-fetch')
