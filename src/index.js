@@ -17,6 +17,26 @@ function content (items=[]) {
 	`
 }
 
+// tbd 
+// some small lazy loading cause images serve wild
+function setup () {
+	const imgs = document.querySelectorAll('.img')
+	checkImgs(imgs)
+	document.addEventListener('scroll', e => {
+		checkImgs(imgs)
+	})
+}
+
+function checkImgs (imgs) {
+	imgs.forEach(el => {
+		let img = el.querySelector('img')
+		if (window.scrollY + window.innerHeight >= el.offsetTop && !el.classList.contains('served')) {
+			el.classList.add('served')
+			img.setAttribute('src', img.getAttribute('data-src'))
+		}
+	})
+}
+
 fetch('https://timur.stdlib.com/are@dev')
 .then(res => res.json())
 .then(json => {
@@ -24,6 +44,7 @@ fetch('https://timur.stdlib.com/are@dev')
 
 	let newBlog = content(json.contents.reverse())
 	yo.update(blog, newBlog)
+	setup()
 })
 
 document.body.prepend(blog)
