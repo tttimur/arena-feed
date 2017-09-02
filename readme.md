@@ -1,3 +1,5 @@
+`npm start` to start the dev env
+
 Using stdlib as the microservice to get the request to arena
 
 ```js
