@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "concurrently 'npm run css:watch' 'npm run server:create'",
-    "server:create": "budo src/ -l -o -P --serve dist/bundle.js -d dist/ -- -t yo-yoify -t es2040",
+    "server:create": "budo src/ -l -o -P --serve bundle.js -d dist/ -- -t yo-yoify -t es2040",
     "css:build": "node src/design.js | postcss --use autoprefixer > dist/bundle.css",
     "css:watch": "onchange 'src/design.js' -- npm run css:build",
     "test": "node test.js"
@@ -21,8 +21,8 @@
   },
   "homepage": "https://github.com/siiiick/arena-blog#readme",
   "dependencies": {
-    "bel": "^5.0.3",
-    "recsst": "^1.1.2"
+    "recsst": "^1.1.2",
+    "yo-yo": "^1.4.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.3",

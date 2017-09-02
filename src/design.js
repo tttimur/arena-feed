@@ -2,8 +2,8 @@ var gr8 = require('gr8')
 var recsst = require('recsst')
 
 var customCss = `
-	html {
-		font-size: 67.95%;
+	html, body {
+		padding: 0;margin:0;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 	}
