@@ -5,13 +5,13 @@ var content = require('./components/content')
 var blog = content()
 
 var options = {
-	per_page: 17,
+	per_page: 4,
 	page: 0,
 	loading: false,
 	over: false
 }
 
-fetch('https://timur.stdlib.com/are@dev')
+fetch('https://timur.stdlib.com/are@dev?id=91263')
 .then(res => res.json())
 .then(json => {
 	// console.log(json)
@@ -24,6 +24,8 @@ function preparePosts (posts) {
 	options.content = posts
 	options.total_pages = Math.ceil(posts.length / options.per_page)
 	options.loading = true
+
+	console.log(options.content)
 	nextPosts()
 }
 
