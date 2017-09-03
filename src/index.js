@@ -1,6 +1,9 @@
 var yo = require('yo-yo')
 var blog = content()
 
+
+var App = require('./model')
+
 // components
 var Image = require('./components/image')
 var Text = require('./components/text')
@@ -20,11 +23,7 @@ function content (items=[]) {
 // tbd 
 // some small lazy loading cause images serve wild
 function setup () {
-	const imgs = document.querySelectorAll('.img')
-	checkImgs(imgs)
-	document.addEventListener('scroll', e => {
-		checkImgs(imgs)
-	})
+
 }
 
 function checkImgs (imgs) {
@@ -44,7 +43,7 @@ fetch('https://timur.stdlib.com/are@dev')
 
 	let newBlog = content(json.contents.reverse())
 	yo.update(blog, newBlog)
-	setup()
+	App.setup()
 })
 
 document.body.prepend(blog)
