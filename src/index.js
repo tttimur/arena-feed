@@ -5,10 +5,11 @@ var content = require('./components/content')
 var blog = content()
 
 var options = {
-	per_page: 10,
-	page: 0
+	per_page: 17,
+	page: 0,
+	loading: false,
+	over: false
 }
-
 
 fetch('https://timur.stdlib.com/are@dev')
 .then(res => res.json())
@@ -16,44 +17,56 @@ fetch('https://timur.stdlib.com/are@dev')
 	// console.log(json)
 
 	preparePosts(json.contents.reverse())
-	// let newBlog = content(json.contents.reverse())
-	// yo.update(blog, newBlog)
+	handleScroll()
 })
 
 function preparePosts (posts) {
 	options.content = posts
-	setPosts(false)
-	setTimeout(setPosts(true), 300)
-	setTimeout(setPosts(true), 600)
+	options.total_pages = Math.ceil(posts.length / options.per_page)
+	options.loading = true
+	nextPosts()
 }
 
 function nextPosts (append=false) {
-	options.page++
-	let nextSet = options.content.slice(options.page * options.per_page - options.per_page, options.per_page * options.page)
-	if (!append) options.loaded = nextSet
-		else options.loaded = options.loaded.concat(nextSet)
+	if (options.loading && options.page !== options.total_pages) {
+		console.log(options)
+		options.page++
+		let nextSet = options.content.slice(options.page * options.per_page - options.per_page, options.per_page * options.page)
+		if (!append) options.loaded = nextSet
+			else options.loaded = options.loaded.concat(nextSet)
 
-	console.log(options)
+		if (options.loaded === options.content) {
+			options.over = true
+			console.log('END')
+			console.log(options)
+		}
+
+		options.loading = false
+		let newBlog = content(options.loaded)
+		yo.update(blog, newBlog)
+	} else {
+		return
+	}
 }
 
 
 function handleScroll () {
-	const imgs = document.querySelectorAll('.img')
-	checkImgs(imgs)
-	document.addEventListener('scroll', e => {
-		checkImgs(imgs)
-	})
+	document.addEventListener('scroll', handleScrollNext)
 }
 
-function checkImgs (imgs) {
-	imgs.forEach(el => {
-		let img = el.querySelector('img')
-		if (window.scrollY + window.innerHeight >= el.offsetTop && !el.classList.contains('served')) {
-			el.classList.add('served')
-			img.setAttribute('src', img.getAttribute('data-src'))
-		}
-	})
+function handleScrollNext () {
+	let bodyH = document.body.clientHeight
+	let winH = window.innerHeight
+	let st = window.scrollY
+
+	if (st + winH >= bodyH - 300 && !options.loading && options.page !== options.total_pages) {
+		options.loading = true
+		nextPosts(true)
+	}
+
 }
+
+
 
 document.body.prepend(blog)
 
