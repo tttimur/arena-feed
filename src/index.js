@@ -1,29 +1,48 @@
 var yo = require('yo-yo')
-var blog = content()
-
-
-var App = require('./model')
 
 // components
-var Image = require('./components/image')
-var Text = require('./components/text')
+var content = require('./components/content')
+var blog = content()
 
-function content (items=[]) {
-	console.log(items)
-	return yo`
-		<main class='buddy px2 py2 mw1000'>
-			${items.map(item => {
-				if (item.class === 'Image') return Image(item)
-					else if (item.class === 'Text') return Text(item)
-			})}
-		</main>
-	`
+var options = {
+	per_page: 10,
+	page: 0
 }
 
-// tbd 
-// some small lazy loading cause images serve wild
-function setup () {
 
+fetch('https://timur.stdlib.com/are@dev')
+.then(res => res.json())
+.then(json => {
+	// console.log(json)
+
+	preparePosts(json.contents.reverse())
+	// let newBlog = content(json.contents.reverse())
+	// yo.update(blog, newBlog)
+})
+
+function preparePosts (posts) {
+	options.content = posts
+	setPosts(false)
+	setTimeout(setPosts(true), 300)
+	setTimeout(setPosts(true), 600)
+}
+
+function nextPosts (append=false) {
+	options.page++
+	let nextSet = options.content.slice(options.page * options.per_page - options.per_page, options.per_page * options.page)
+	if (!append) options.loaded = nextSet
+		else options.loaded = options.loaded.concat(nextSet)
+
+	console.log(options)
+}
+
+
+function handleScroll () {
+	const imgs = document.querySelectorAll('.img')
+	checkImgs(imgs)
+	document.addEventListener('scroll', e => {
+		checkImgs(imgs)
+	})
 }
 
 function checkImgs (imgs) {
@@ -35,16 +54,6 @@ function checkImgs (imgs) {
 		}
 	})
 }
-
-fetch('https://timur.stdlib.com/are@dev')
-.then(res => res.json())
-.then(json => {
-	// console.log(json)
-
-	let newBlog = content(json.contents.reverse())
-	yo.update(blog, newBlog)
-	App.setup()
-})
 
 document.body.prepend(blog)
 
